@@ -1,0 +1,76 @@
+{
+    "events": [
+        {
+            "name": "山登り",
+            "description": "初級者向けの山に一緒に登りませんか??",
+            "date": "2021/08/07",
+            "image_path": "assets/images/mountain.jpg"
+        },
+        {
+            "name": "プログラミング勉強会",
+            "description": "初心者のみなさん集まれ！優しくお教えします",
+            "date": "2021/08/09",
+            "image_path": "assets/images/programming.jpg"
+        },
+        {
+            "name": "フットサル",
+            "description": "集まってワイワイフットサルしましょう!",
+            "date": "2021/08/12",
+            "image_path": "assets/images/footsul.jpg"
+        },
+        {
+            "name": "カフェ巡り",
+            "description": "中目黒周りのカフェを一緒に巡りましょう~~",
+            "date": "2021/08/12",
+            "image_path": "assets/images/cafe.jpg"
+        },
+        {
+            "name": "読書会",
+            "description": "おすすめ本みんなでシェアしませんか??",
+            "date": "2021/08/12",
+            "image_path": "assets/images/book.jpg"
+        },
+        {
+            "name": "花火大会",
+            "description": "夏の醍醐味をみんなで楽しみましょう!!",
+            "date": "2021/08/14",
+            "image_path": "assets/images/firework.jpg"
+        },
+        {
+            "name": "eスポーツ",
+            "description": "大会で成果が出せるように研鑽し合いましょう",
+            "date": "2021/08/17",
+            "image_path": "assets/images/game.jpg"
+        },
+        {
+            "name": "野球",
+            "description": "試合がしたいです",
+            "date": "2021/08/19",
+            "image_path": "assets/images/baseball.jpg"
+        },
+        {
+            "name": "バスケットボール",
+            "description": "渋谷区のどこかの体育館を予定しています!",
+            "date": "2021/08/21",
+            "image_path": "assets/images/basketball.jpg"
+        },
+        {
+            "name": "ドローン",
+            "description": "上達を目指してテクニックや撮った写真を見せ合いませんか?",
+            "date": "2021/08/24",
+            "image_path": "assets/images/drone.jpg"
+        },
+        {
+            "name": "お寺巡り",
+            "description": "鎌倉エリアのお寺を巡りましょう!",
+            "date": "2021/08/26",
+            "image_path": "assets/images/temple.jpg"
+        },
+        {
+            "name": "お菓子作り",
+            "description": "今回の題材はカップケーキを予定しています!",
+            "date": "2021/08/29",
+            "image_path": "assets/images/sweet.jpg"
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+variable "domain" {
+
+}
+
+variable "tagNames" {
+
+}
