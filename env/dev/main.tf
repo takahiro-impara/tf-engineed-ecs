@@ -106,17 +106,16 @@ module "rds" {
 }
 
 module "redis-cluster" {
-  source                = "../../modules/elasticache/"
+  source                = "../../modules/elasticache/cluster"
   tagNames              = local.tagNames
-  availability_zones    = ["ap-northeast-1a"]
+  availability_zones    = ["ap-northeast-1a", "ap-northeast-1c"]
   node_type             = local.node_type
-  number_cache_clusters = 1
+  number_cache_clusters = 2
   security_group_ids = [
     module.sg-dev-redis-6379.sec_group.id,
   ]
   subnets = module.vpc.secure_ids
 }
-
 module "ecr-nginx" {
   source   = "../../modules/ecr/"
   name     = "nginx"
@@ -165,7 +164,7 @@ module "ecs-service-alb" {
   tagNames         = local.tagNames
   cluster          = module.ecs-cluster.aws_ecs_cluster.id
   task_definition  = module.ecs-task-nginx.aws_ecs_task_definition_arn
-  desired_count    = 1
+  desired_count    = 2
   target_group_arn = module.alb.aws_lb_target_group.arn
   container_name   = "nginx-new"
   container_port   = 80
@@ -184,7 +183,7 @@ module "ecs-service-php" {
   tagNames        = local.tagNames
   cluster         = module.ecs-cluster.aws_ecs_cluster.id
   task_definition = module.ecs-task-php.aws_ecs_task_definition_arn
-  desired_count   = 1
+  desired_count   = 2
   container_name  = "php-new"
   container_port  = 9000
   subnets         = module.vpc.private_ids
@@ -277,6 +276,53 @@ module "natgw" {
   vpc_id           = module.vpc.vpc_id
   private_subnets  = module.vpc.private_ids
 }
+
+module "iam_autoscaling" {
+  source = "../../modules/iam/autoscaling/"
+}
+
+module "autoscaling_nginx" {
+  source      = "../../modules/ecs/autoscaling/"
+  name        = "nginx-new"
+  resource_id = "service/${module.ecs-cluster.aws_ecs_cluster.name}/${module.ecs-service-alb.aws_ecs_service_name}"
+  depends_on = [
+    module.iam_autoscaling
+  ]
+}
+
+module "cloudwatch_cpu_alerm_nginx" {
+  source                             = "../../modules/cloudwatch/alerm/"
+  name                               = "nginx"
+  ClusterName                        = module.ecs-cluster.aws_ecs_cluster.name
+  ServiceName                        = module.ecs-service-alb.aws_ecs_service_name
+  aws_appautoscaling_policy_up_arn   = module.autoscaling_nginx.aws_appautoscaling_policy_up_arn
+  aws_appautoscaling_policy_down_arn = module.autoscaling_nginx.aws_appautoscaling_policy_down_arn
+  depends_on = [
+    module.autoscaling_nginx
+  ]
+}
+
+module "autoscaling_php" {
+  source      = "../../modules/ecs/autoscaling/"
+  name        = "php-new"
+  resource_id = "service/${module.ecs-cluster.aws_ecs_cluster.name}/${module.ecs-service-php.aws_ecs_service_name}"
+  depends_on = [
+    module.iam_autoscaling
+  ]
+}
+
+module "cloudwatch_cpu_alerm_php" {
+  source                             = "../../modules/cloudwatch/alerm/"
+  name                               = "php"
+  ClusterName                        = module.ecs-cluster.aws_ecs_cluster.name
+  ServiceName                        = module.ecs-service-php.aws_ecs_service_name
+  aws_appautoscaling_policy_up_arn   = module.autoscaling_php.aws_appautoscaling_policy_up_arn
+  aws_appautoscaling_policy_down_arn = module.autoscaling_php.aws_appautoscaling_policy_down_arn
+  depends_on = [
+    module.autoscaling_php
+  ]
+}
+
 #sg
 module "sg-dev-sql-3306" {
   source      = "app.terraform.io/impara8/private-securitygroup/aws"

@@ -1,9 +1,5 @@
 data "aws_route_tables" "rts" {
   vpc_id = var.vpc_id
-  filter {
-    name   = "tag:Name"
-    values = ["private*"]
-  }
 }
 
 resource "aws_vpc_endpoint" "s3" {
