@@ -17,7 +17,7 @@ pipeline {
         checkout scm
       }
     }
-    stage("terraform") {
+    stage("terraform init") {
       steps {
         withCredentials(
           [[
@@ -29,6 +29,21 @@ pipeline {
         ) {
           sh '''
           cd env/dev/;terraform init -no-color
+          '''
+        }
+      }
+    }
+    stage("terraform init") {
+      steps {
+        withCredentials(
+          [[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'koichi',
+            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+          ]]
+        ) {
+          sh '''
           cd env/dev/;terraform plan -no-color
           '''
         }
