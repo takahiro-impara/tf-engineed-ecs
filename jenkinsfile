@@ -1,0 +1,42 @@
+pipeline {
+  agent any
+  environment {
+    work_dir='env/dev/'
+  }
+  options {
+    skipDefaultCheckout(true)
+  }
+  stages{
+    stage('clean workspace') {
+      steps {
+        cleanWs()
+      }
+    }
+    stage('checkout') {
+      steps {
+        checkout scm
+      }
+    }
+    stage("terraform") {
+      steps {
+        withCredentials(
+          [[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'koichi',
+            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+          ]]
+        ) {
+          sh '''
+          terraform plan
+          '''
+        }
+      }
+    }
+  }
+  post {
+    always {
+      cleanWs()
+    }
+  }
+}

@@ -4,7 +4,7 @@
     "Statement": [
         {
             "Sid": "Stmt1634538851171",
-            "Effect": "Deny",
+            "Effect": "Allow",
             "Principal": {
                 "AWS": "*"
             },
@@ -12,12 +12,7 @@
             "Resource": [
                 "arn:aws:s3:::eng-exam-container-develop/*",
                 "arn:aws:s3:::eng-exam-container-develop"
-            ],
-            "Condition": {
-                "StringNotEquals": {
-                    "aws:SourceVpce": "vpce-0bf1e83bcf04b160e"
-                }
-            }
+            ]
         }
     ]
 }
