@@ -33,7 +33,7 @@ pipeline {
         }
       }
     }
-    stage("terraform init") {
+    stage("terraform plan") {
       steps {
         withCredentials(
           [[
