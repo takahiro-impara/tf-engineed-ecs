@@ -1,8 +1,5 @@
 pipeline {
   agent any
-  environment {
-    work_dir='env/dev/'
-  }
   options {
     skipDefaultCheckout(true)
   }
@@ -28,7 +25,7 @@ pipeline {
           ]]
         ) {
           sh '''
-          cd env/dev/;terraform init -no-color
+          cd env/dev/;terraform init
           '''
         }
       }
@@ -44,7 +41,7 @@ pipeline {
           ]]
         ) {
           sh '''
-          cd env/dev/;terraform plan -no-color
+          cd env/dev/;terraform plan
           '''
         }
       }
