@@ -28,7 +28,8 @@ pipeline {
           ]]
         ) {
           sh '''
-          cd env/dev/;terraform init
+          cd env/dev/;terraform init -no-color
+          cd env/dev/;terraform plan -no-color
           '''
         }
       }
