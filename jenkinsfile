@@ -28,7 +28,7 @@ pipeline {
           ]]
         ) {
           sh '''
-          terraform init
+          cd env/dev/;terraform init
           '''
         }
       }
