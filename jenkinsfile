@@ -28,7 +28,7 @@ pipeline {
           ]]
         ) {
           sh '''
-          terraform plan
+          terraform init
           '''
         }
       }
